@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+  <div class="card-header bg-success text-white">
+    Registo
+  </div>
+  <div class="card-body">
+    <form method="post" class="row justify-content-between">
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" class="form-control" id="nome" name="nome" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" class="form-control" id="senha" name="senha" required>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <label for="categoria">Categoria</label>
+          <select class="form-control" name="categoria" id="categoria" required>
+            <option value="Medico">Medico</option>
+            <option value="Enfermeiro">Enfermeiro</option>
+            <option value="Outro">Outro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="especialidade">Especialidade</label>
+          <select class="form-control" name="especialidade" id="especialidade" required>
+            <option value="Cardiologista">Cardiologista</option>
+            <option value="Cirurgiao">Cirurgião</option>
+            <option value="Pediatra">Pediatra</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="telefone">Telefone</label>
+          <input type="text" class="form-control" id="telefone" name="telefone" required>
+        </div>
+      </div>
+
+      <div class=" col-12">
+        <button type="submit" class="btn btn-success">Registar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card">
+    <div class="card-header bg-success text-white">
+        Prever Diagnóstico
+    </div>
+    <div class="card-body">
+        <form method="post" class="row">
+
+            <!-- Dados do paciente-->
+            <div class="col-6 row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input value="Nome" type="text" class="form-control" id="nome" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Data de Nascimento</label>
+                        <input value="17/06/2024" type="date" class="form-control" id="nascimento" name="nascimento" >
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input value="a@xm.com" type="email" class="form-control" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dor">Tipo de dor torácica</label>
+                        <select class="form-control" name="dor" id="dor" required>
+                            <option value="0">Assintomática</option>
+                            <option value="1">Angina atípica</option>
+                            <option value="2">Dor não anginosa</option>
+                            <option value="3">Angina típica</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="angina">Angina induzida por exercício</label>
+                        <select class="form-control" name="angina" id="angina" required>
+                            <option value="0">Não</option>
+                            <option value="1">Sim</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="talassemia">Talassemia</label>
+                        <select class="form-control" name="talassemia" id="talassemia" required>
+                            <option value="1">Defeito fixo</option>
+                            <option value="2">Normal</option>
+                            <option value="3">Defeito reversível</option>
+                        </select>
+                    </div>
+                   
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="sexo">Sexo</label>
+                        <select class="form-control" name="sexo" id="sexo" required>
+                            <option value="1">Masculino</option>
+                            <option value="0">Femenino</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">Endereço</label>
+                        <input value="endereco" type="text" class="form-control" id="endereco" name="endereco" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input value="963652541" type="text" class="form-control" id="telefone" name="telefone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="colesterol">Soro Colestoral em mg/dl</label>
+                        <input value="150" type="number" class="form-control" id="colesterol" name="colesterol" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="glicemia">Glicemia em jejum(>120 mg/dl)</label>
+                        <select class="form-control" name="glicemia" id="glicemia" required>
+                            <option value="1">Sim</option>
+                            <option value="0">Não</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="num_vasos">Vasos principais por fluorosopia</label>
+                        <input value="2" type="number" min="0" max="3" class="form-control" id="num_vasos" name="num_vasos" required>
+                    </div>
+                    
+                </div>
+                
+            </div>
+
+            <!-- Dados para previsao-->
+            <div class="col-6">
+                
+                <div class="form-group">
+                    <label for="ta">Pressão arterial em repouso (mm/Hg na admissão ao hospital)</label>
+                    <input value="198" type="number" class="form-control" id="ta" name="ta" required>
+                </div>
+                
+
+                
+
+                <div class="form-group">
+                    <label for="result_eletrocardiografico">Resultados eletrocardiográficos em repouso</label>
+                    <select class="form-control" name="result_eletrocardiografico" id="result_eletrocardiografico"
+                        required>
+                        <option value="1">Normal</option>
+                        <option value="0">Mostrando hipertrofia ventricular esquerda provável ou definitiva pelos
+                            critérios de Estes</option>
+                        <option value="2">Com anormalidade nas ondas ST-T</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="freq_cardiaca">Frequência cardíaca máxima alcançada</label>
+                    <input value="120" type="number" class="form-control" id="freq_cardiaca" name="freq_cardiaca" required>
+                </div>
+
+               
+
+                <div class="form-group">
+                    <label for="oldpeak">Oldpeak-depressão do segmento ST induzida pelo exercício </label>
+                    <input value="58" type="text" class="form-control" id="oldpeak" name="oldpeak" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inclinacao_st">A inclinação do pico do segmento ST do exercício</label>
+                    <select class="form-control" name="inclinacao_st" id="inclinacao_st" required>
+                        <option value="0">Descendente</option>
+                        <option value="1">Plano</option>
+                        <option value="2">Ascendente</option>
+                    </select>
+                </div>
+
+                
+
+                
+
+
+                <div class=" col-12 mt-5">
+                    <button type="submit" class="btn btn-success form-control">Prever</button>
+                </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

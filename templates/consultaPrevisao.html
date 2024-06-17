@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <div class="card-header bg-success text-white">
+    Previsões
+  </div>
+  <div class="card-body">
+    {% if previsoes %}
+    <table class="table table-striped table-hover table-responsive">
+      <thead class="bg-dark text-light">
+        <tr>
+          <th>ID</th>
+          <th>Paciente</th>
+          <th>Data</th>
+          <th>Dor Torácica</th>
+          <th>TA</th>
+          <th>Colesterol</th>
+          <th>Glicemia</th>
+          <th>Result ECG</th>
+          <th>Freq Cardíaca</th>
+          <th>Angina</th>
+          <th>Oldpeak</th>
+          <th>Inclinação ST</th>
+          <th>Vasos Principais</th>
+          <th>Talassemia</th>
+          <th>Previsão</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for previsao in previsoes %}
+        <tr>
+          <td>{{ previsao.id }}</td>
+          <td>{{ previsao.paciente_nome }}</td>
+          <td>{{ previsao.data }}</td>
+          <td>{{ previsao.dor_toracica }}</td>
+          <td>{{ previsao.ta }}</td>
+          <td>{{ previsao.colesterol }}</td>
+          <td>{{ previsao.glicemia }}</td>
+          <td>{{ previsao.resultados_eletrocardiograficos }}</td>
+          <td>{{ previsao.frequencia_cardiaca }}</td>
+          <td>{{ previsao.angina }}</td>
+          <td>{{ previsao.oldpeak }}</td>
+          <td>{{ previsao.inclinacao_st }}</td>
+          <td>{{ previsao.num_vasos_principais }}</td>
+          <td>{{ previsao.talassemia }}</td>
+          <td>{{ previsao.previsao }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>Sem previsões feitas.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
