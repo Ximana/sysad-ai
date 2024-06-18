@@ -8,6 +8,8 @@ import numpy as np
 
 from datetime import date, datetime
 
+from sklearn.preprocessing import StandardScaler
+
 # Carrega o modelo 
 with open('ml/rf_model.pkl', 'rb') as f:
     rf_model = pickle.load(f)
@@ -16,7 +18,7 @@ with open('ml/scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Substitua por uma chave secreta forte
+app.secret_key = '1234'
 
 DATABASE = 'bd/bd_sysad.db'
 
@@ -97,18 +99,49 @@ def logout():
 def previsao():
     if request.method == 'POST':
         
-        # Obter o resultado d diagnostico
-        previsao =  predict(request.form) # faz o diagnostico do paciente com os dados do fomrulario
+        # Obter dados do formulário
+            #calcular a idade
+        idade = int(date.today().year) - int(date.fromisoformat(request.form['nascimento']).year)
         
-        previsao = "Possibilidade de uma doença cardiovascular" if previsao == "1" else "Sem possibilidade de uma doença cardiovascular"
-                
+        age = idade
+        sex = int(request.form['sexo'])
+        cp = int(request.form['dor'])
+        trestbps = int(request.form['ta'])
+        chol = int(request.form['colesterol'])
+        fbs = int(request.form['glicemia'])
+        restecg = int(request.form['result_eletrocardiografico'])
+        thalach = int(request.form['freq_cardiaca'])
+        exang = int(request.form['angina'])
+        oldpeak = request.form['oldpeak']
+        slope = int(request.form['inclinacao_st'])
+        ca = int(request.form['num_vasos'])
+        thal = int(request.form['talassemia'])
+
+        # Criar array com os dados do paciente
+        dados_paciente = np.array([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]])
+
+        # Escalonar os dados do paciente
+        dados_paciente_scaled = scaler.transform(dados_paciente)
+
+        # Fazer a previsão com o modelo Random Forest
+        previsao = rf_model.predict(dados_paciente_scaled)
+        prediction_proba = rf_model.predict_proba(dados_paciente_scaled)
+
+        # Resultado da previsão
+        resultado_da_previsao = 'Doente' if previsao[0] == 1 else 'Saudável'
+        probabilidade = prediction_proba[0][previsao[0]] * 100
+        
+        previsao_mensagem = f'O paciente está {resultado_da_previsao} com uma probabilidade de {probabilidade:.2f}%'
         # Salvar os dados do paciente e do diagnostico na BD
-        gardarPrevisao(request.form, previsao)
-        
-        flash('Resultado da previsao: '+ previsao +'.', 'success')
+        gardarPrevisao(request.form, previsao_mensagem)
+
+        flash(previsao_mensagem, 'success')
         return redirect(url_for('previsao'))
+        r#eturn f'O paciente está {result} com uma probabilidade de {prob:.2f}%'
+    
                
     return render_template('previsao.html')
+
 
 @app.route('/consultaPrevisao')
 def consultaPrevisao():
@@ -147,45 +180,6 @@ def consultaPaciente():
         pacientes = cursor.fetchall()
         return render_template('consultaPaciente.html', pacientes=pacientes)
     return redirect(url_for('login'))
-
-
-def predict(paciente):
-    
-    try:        
-        idade = date.today().year - date.fromisoformat(paciente['nascimento']).year
-        novo_paciente = {
-            'age': idade,
-            'sex': paciente['sexo'],
-            'cp': paciente['dor'],
-            'trestbps': paciente['ta'],
-            'chol': paciente['colesterol'],
-            'fbs': paciente['glicemia'],
-            'restecg': paciente['result_eletrocardiografico'],
-            'thalach': paciente['freq_cardiaca'],
-            'exang': paciente['angina'],
-            'oldpeak': paciente['oldpeak'],
-            'slope': paciente['inclinacao_st'],
-            'ca': paciente['num_vasos'],
-            'thal': paciente['talassemia'],
-        }
-            
-        #data = request.form.to_dict()
-        df_novo_paciente = pd.DataFrame([novo_paciente])
-        
-        # Converter os dados para os tipos corretos
-        #df = df.astype(float)
-        
-        # Pré-processar os dados
-        df_scaled_novo_paciente = scaler.transform(df_novo_paciente)
-        
-        # Previsão com Random Forest
-        rf_prediction = rf_model.predict(df_scaled_novo_paciente)
-        
-        return str(rf_prediction[0]) # Previsão Random Forest
-    
-    except Exception as e:
-        return f'Erro: {str(e)}', 400
-   
     
 def gardarPrevisao(form, previsao):
     
@@ -267,45 +261,6 @@ def gardarPrevisao(form, previsao):
         flash(f'Erro ao salvar os dados: {e}', 'danger')
         return redirect(url_for('previsao'))
     
- 
-# Predizer com o Gradient Boosting
-def predict_GB(paciente):
-    
-    try:        
-        idade = date.today().year - date.fromisoformat(paciente['nascimento']).year
-        novo_paciente = {
-            'age': idade,
-            'sex': paciente['sexo'],
-            'cp': paciente['dor'],
-            'trestbps': paciente['ta'],
-            'chol': paciente['colesterol'],
-            'fbs': paciente['glicemia'],
-            'restecg': paciente['result_eletrocardiografico'],
-            'thalach': paciente['freq_cardiaca'],
-            'exang': paciente['angina'],
-            'oldpeak': paciente['oldpeak'],
-            'slope': paciente['inclinacao_st'],
-            'ca': paciente['num_vasos'],
-            'thal': paciente['talassemia'],
-        }
-            
-        #data = request.form.to_dict()
-        df_novo_paciente = pd.DataFrame([novo_paciente])
-        
-        # Converter os dados para os tipos corretos
-        #df = df.astype(float)
-        
-        # Pré-processar os dados
-        df_scaled_novo_paciente = scaler.transform(df_novo_paciente)
-        
-        # Previsão com Random Forest
-        gb_prediction = gb_model.predict(df_scaled_novo_paciente)
-        
-        return str(gb_prediction[0]) # Previsão Gradient Boosting
-    
-    except Exception as e:
-        return f'Erro: {str(e)}', 400
-    
-    
+     
 if __name__ == '__main__':
     app.run(debug=True)
