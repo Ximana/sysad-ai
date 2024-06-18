@@ -31,6 +31,10 @@ def get_db():
 def home():
     return render_template('index.html')
 
+@app.route('/sobre')
+def sobre():
+    return render_template('sobre.html')
+
 @app.route('/cadastroUsuariio', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -88,6 +92,43 @@ def dashboard():
         nome_profissional = session['nome']  # Obtém o nome do profissional da sessão
         return render_template('dashboard.html', nome_profissional=nome_profissional)
     return redirect(url_for('login'))
+
+@app.route('/detalhePaciente/<int:id_paciente>')
+def detalhePaciente(id_paciente):
+    
+    if 'user_id' in session:
+        
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute('''
+            SELECT paciente.*, previsao.*
+            FROM paciente
+            JOIN previsao ON previsao.id_paciente = paciente.id
+            WHERE paciente.id = ?
+            
+        ''', (id_paciente,))
+        paciente = cursor.fetchone()
+        return render_template('detalhePaciente.html', paciente=paciente)
+    
+    return redirect(url_for('login'))
+    
+
+# Rota para pesquisa de paciente por nome
+@app.route('/pesquisar', methods=['GET', 'POST'])
+def pesquisar_paciente():
+    if request.method == 'POST':
+        nome = request.form['pesquisa']
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute('''
+                        SELECT paciente.*, previsao.*
+                        FROM paciente
+                        JOIN previsao ON previsao.id_paciente = paciente.id
+                        WHERE paciente.nome LIKE ?''', ('%' + nome + '%',))
+        pacientes = cursor.fetchall()
+        return render_template('consultaPaciente.html', pacientes=pacientes, nome_pesquisado=nome)
+    return render_template('index.html')
+    
 
 @app.route('/logout')
 def logout():

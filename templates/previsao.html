@@ -1,147 +1,124 @@
 {% extends "base.html" %}
 {% block content %}
-
 <div class="card">
     <div class="card-header bg-success text-white">
-        Prever Diagnóstico
+      Prever Diagnóstico
     </div>
     <div class="card-body">
-        <form method="post" class="row">
+      <form method="post">
+        <div class="row">
 
-            <!-- Dados do paciente-->
-            <div class="col-6 row">
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="nome">Nome</label>
-                        <input type="text" class="form-control" id="nome" name="nome" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Data de Nascimento</label>
-                        <input type="date" class="form-control" id="nascimento" name="nascimento" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input  type="email" class="form-control" id="email" name="email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="dor">Tipo de dor torácica (cp)</label>
-                        <select class="form-control" name="dor" id="dor" required>
-                            <option value="0">Assintomática</option>
-                            <option value="1">Angina atípica</option>
-                            <option value="2">Dor não anginosa</option>
-                            <option value="3">Angina típica</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="angina">Angina induzida por exercício (exang)</label>
-                        <select class="form-control" name="angina" id="angina" required>
-                            <option value="0">Não</option>
-                            <option value="1">Sim</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="talassemia">Talassemia (thal)</label>
-                        <select class="form-control" name="talassemia" id="talassemia" required>
-                            <option value="1">Defeito fixo</option>
-                            <option value="2">Normal</option>
-                            <option value="3">Defeito reversível</option>
-                        </select>
-                    </div>
-                   
-                </div>
-                <div class="col-6">
-                    <div class="form-group">
-                        <label for="sexo">Sexo</label>
-                        <select class="form-control" name="sexo" id="sexo" required>
-                            <option value="1">Masculino</option>
-                            <option value="0">Femenino</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="telefone">Endereço</label>
-                        <input type="text" class="form-control" id="endereco" name="endereco" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="telefone">Telefone</label>
-                        <input type="text" class="form-control" id="telefone" name="telefone" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="colesterol">Colesterol Sérico (chol)</label>
-                        <input type="number" class="form-control" id="colesterol" name="colesterol" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="glicemia">Glicemia em jejum(>120 mg/dl) (fbs)</label>
-                        <select class="form-control" name="glicemia" id="glicemia" required>
-                            <option value="0">Não</option>
-                            <option value="1">Sim</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="num_vasos">Vasos principais (ca)</label>
-                        <input type="number" min="0" max="3" class="form-control" id="num_vasos" name="num_vasos" required>
-                    </div>
-                    
-                </div>
-                
+          <!-- Dados do paciente -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-group">
+              <label for="nome">Nome</label>
+              <input type="text" class="form-control" id="nome" name="nome" required>
             </div>
+            <div class="form-group">
+              <label for="nascimento">Data de Nascimento</label>
+              <input type="date" class="form-control" id="nascimento" name="nascimento" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="dor">Tipo de dor torácica (cp)</label>
+              <select class="form-control" name="dor" id="dor" required>
+                <option value="0">Assintomática</option>
+                <option value="1">Angina atípica</option>
+                <option value="2">Dor não anginosa</option>
+                <option value="3">Angina típica</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="angina">Angina induzida por exercício (exang)</label>
+              <select class="form-control" name="angina" id="angina" required>
+                <option value="0">Não</option>
+                <option value="1">Sim</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="talassemia">Talassemia (thal)</label>
+              <select class="form-control" name="talassemia" id="talassemia" required>
+                <option value="1">Defeito fixo</option>
+                <option value="2">Normal</option>
+                <option value="3">Defeito reversível</option>
+              </select>
+            </div>
+          </div>
 
-            <!-- Dados para previsao-->
-            <div class="col-6">
-                
-                <div class="form-group">
-                    <label for="ta">Pressão arterial em repouso (trestbps)</label>
-                    <input type="number" class="form-control" id="ta" name="ta" required>
-                </div>
-                
+          <!-- Dados para previsão -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-group">
+              <label for="sexo">Sexo</label>
+              <select class="form-control" name="sexo" id="sexo" required>
+                <option value="1">Masculino</option>
+                <option value="0">Feminino</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="endereco">Endereço</label>
+              <input type="text" class="form-control" id="endereco" name="endereco" required>
+            </div>
+            <div class="form-group">
+              <label for="telefone">Telefone</label>
+              <input type="text" class="form-control" id="telefone" name="telefone" required>
+            </div>
+            <div class="form-group">
+              <label for="colesterol">Colesterol Sérico (chol)</label>
+              <input type="number" class="form-control" id="colesterol" name="colesterol" required>
+            </div>
+            <div class="form-group">
+              <label for="glicemia">Glicemia em jejum(>120 mg/dl) (fbs)</label>
+              <select class="form-control" name="glicemia" id="glicemia" required>
+                <option value="0">Não</option>
+                <option value="1">Sim</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="num_vasos">Vasos principais (ca)</label>
+              <input type="number" min="0" max="3" class="form-control" id="num_vasos" name="num_vasos" required>
+            </div>
+          </div>
 
-                
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-group">
+              <label for="ta">Pressão arterial em repouso (trestbps)</label>
+              <input type="number" class="form-control" id="ta" name="ta" required>
+            </div>
+            <div class="form-group">
+              <label for="result_eletrocardiografico">Resultados eletrocardiográficos (restecg)</label>
+              <select class="form-control" name="result_eletrocardiografico" id="result_eletrocardiografico" required>
+                <option value="0">Mostrando hipertrofia ventricular esquerda provável ou definitiva pelos critérios de Estes</option>
+                <option value="1">Normal</option>
+                <option value="2">Com anormalidade nas ondas ST-T</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="freq_cardiaca">Frequência cardíaca máxima (thalach)</label>
+              <input type="number" class="form-control" id="freq_cardiaca" name="freq_cardiaca" required>
+            </div>
+            <div class="form-group">
+              <label for="oldpeak">Oldpeak-depressão do segmento ST</label>
+              <input type="text" class="form-control" id="oldpeak" name="oldpeak" required>
+            </div>
+            <div class="form-group">
+              <label for="inclinacao_st">Inclinação do pico do segmento ST (slope)</label>
+              <select class="form-control" name="inclinacao_st" id="inclinacao_st" required>
+                <option value="0">Descendente</option>
+                <option value="1">Plano</option>
+                <option value="2">Ascendente</option>
+              </select>
+            </div>
+          </div>
 
-                <div class="form-group">
-                    <label for="result_eletrocardiografico">Resultados eletrocardiográficos (restecg)</label>
-                    <select class="form-control" name="result_eletrocardiografico" id="result_eletrocardiografico"
-                        required>
-                        <option value="0">Mostrando hipertrofia ventricular esquerda provável ou definitiva pelos
-                            critérios de Estes</option>
-                        <option value="1">Normal</option>
-                        <option value="2">Com anormalidade nas ondas ST-T</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="freq_cardiaca">Frequência cardíaca máxima alcançada (thalach)</label>
-                    <input type="number" class="form-control" id="freq_cardiaca" name="freq_cardiaca" required>
-                </div>
-
-               
-
-                <div class="form-group">
-                    <label for="oldpeak">Oldpeak-depressão do segmento ST induzida pelo exercício </label>
-                    <input type="text" class="form-control" id="oldpeak" name="oldpeak" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="inclinacao_st">Inclinação do pico do segmento ST do exercício (slope)</label>
-                    <select class="form-control" name="inclinacao_st" id="inclinacao_st" required>
-                        <option value="0">Descendente</option>
-                        <option value="1">Plano</option>
-                        <option value="2">Ascendente</option>
-                    </select>
-                </div>
-
-                
-
-                
-
-
-                <div class=" col-12 mt-5">
-                    <button type="submit" class="btn btn-success form-control">Prever</button>
-                </div>
-        </form>
+          <div class="col-12">
+            <button type="submit" class="btn btn-success btn-block">Prever</button>
+          </div>
+        </div>
+      </form>
     </div>
-</div>
+  </div>
+
 {% endblock %}

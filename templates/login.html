@@ -1,37 +1,38 @@
 {% extends "base.html" %} {% block content %}
 
-<div class="login-background " >
-
-  <div class="card w-25">
-    <div class="card-header bg-success text-white">
-      <h2>Login</h2>
-    </div>
-    <div class="card-body">
-      <form method="post">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            name="email"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <label for="senha">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="senha"
-            name="senha"
-            required
-          />
-        </div>
-        <button type="submit" class="btn btn-success">Login</button>
-      </form>
+<div class="row justify-content-center login-background">
+  <div class="col-md-6 col-lg-4">
+    <div class="card">
+      <div class="card-header bg-success text-white">
+        <h2 class="text-center">Login</h2>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          <div class="form-group">
+            <label for="email"><i class="fa fa-envelope" aria-hidden="true"></i>Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="senha"><i class="fa fa-lock" aria-hidden="true"></i>Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="senha"
+              name="senha"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-success btn-block">Login</button>
+        </form>
+      </div>
     </div>
   </div>
-
 </div>
+
 {% endblock %}

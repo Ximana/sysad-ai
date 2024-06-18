@@ -1,6 +1,63 @@
 {% extends "base.html" %}
 {% block content %}
 
+<div class="row justify-content-center">
+  <div class="col-md-10 col-lg-8">
+    <div class="card">
+      <div class="card-header bg-success text-white">
+        Registo
+      </div>
+      <div class="card-body">
+        <form method="post" class="row">
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="nome"><i class="fa fa-user" aria-hidden="true"></i>Nome</label>
+              <input type="text" class="form-control" id="nome" name="nome" required>
+            </div>
+            <div class="form-group">
+              <label for="email"><i class="fa fa-envelope" aria-hidden="true"></i>Email</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="telefone"><i class="fa fa-phone" aria-hidden="true"></i>Telefone</label>
+              <input type="text" class="form-control" id="telefone" name="telefone" required>
+            </div>
+            
+          </div>
+
+          <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="categoria"><i class="fa fa-user-md" aria-hidden="true"></i>Categoria</label>
+              <select class="form-control" name="categoria" id="categoria" required>
+                <option value="Medico">Medico</option>
+                <option value="Enfermeiro">Enfermeiro</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="especialidade"><i class="fa fa-user-md" aria-hidden="true"></i>Especialidade</label>
+              <select class="form-control" name="especialidade" id="especialidade" required>
+                <option value="Cardiologista">Cardiologista</option>
+                <option value="Cirurgiao">Cirurgião</option>
+                <option value="Pediatra">Pediatra</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="senha"><i class="fa fa-lock" aria-hidden="true"></i>Senha</label>
+              <input type="password" class="form-control" id="senha" name="senha" required>
+            </div>
+            
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-success btn-block">Registar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--
 <div class="card">
   <div class="card-header bg-success text-white">
     Registo
@@ -52,4 +109,6 @@
     </form>
   </div>
 </div>
+-->
+
 {% endblock %}

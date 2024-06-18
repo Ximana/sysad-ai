@@ -1,5 +1,6 @@
 body {
   background-color: #e9f5ee;
+  padding-top: 56px; /* Espaço para o menu fixo */
 }
 
 .card {
@@ -43,4 +44,20 @@ body {
   background-position: center center;
   background-size: contain;
   
+}
+
+.form-container {
+  margin-top: 100px;
+}
+.form-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+@media (min-width: 992px) {
+  .form-content {
+      max-width: 800px;
+      margin: 0 auto;
+  }
 }

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <div class="card-header bg-success text-white">
+      Prever Diagnóstico
+    </div>
+    <div class="card-body">
+      <form method="post">
+        <div class="row">
+
+          <!-- Dados do paciente -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-group">
+              <label for="nome">Nome</label>
+              <input value=" {{ paciente['nome'] }}"  type="text" class="form-control" id="nome" name="nome" readonly>
+            </div>
+            <div class="form-group">
+              <label for="nascimento">Data de Nascimento</label>
+              <input value=" {{ paciente['data_nascimento'] }}" type="text" class="form-control" id="nascimento" name="nascimento" readonly>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input value=" {{ paciente['email'] }}" type="text" class="form-control" id="email" name="email" readonly>
+            </div>
+            <div class="form-group">
+              <label for="dor">Tipo de dor torácica (cp)</label>
+              <input value=" {{ paciente['dor_toracica'] }}" type="text" class="form-control" id="email" name="email" readonly>
+            </div>
+            <div class="form-group">
+              <label for="angina">Angina induzida por exercício (exang)</label>
+              <input value=" {{ paciente['angina'] }}" type="text" class="form-control" id="email" name="email" readonly>
+            </div>
+            <div class="form-group">
+              <label for="talassemia">Talassemia (thal)</label>
+              <input value=" {{ paciente['talassemia'] }}" type="text" class="form-control" id="email" name="email" readonly>
+            </div>
+          </div>
+
+          <!-- Dados para previsão -->
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-group">
+              <label for="sexo">Sexo</label>
+              <input value=" {{ paciente['sexo'] }}" type="text" class="form-control" id="email" name="email" readonly>
+            </div>
+            <div class="form-group">
+              <label for="endereco">Endereço</label>
+              <input value="{{ paciente['nome'] }}" type="text" class="form-control" id="endereco" name="endereco" readonly>
+            </div>
+            <div class="form-group">
+              <label for="telefone">Telefone</label>
+              <input value=" {{ paciente['telefone'] }}" type="text" class="form-control" id="telefone" name="telefone" readonly>
+            </div>
+            <div class="form-group">
+              <label for="colesterol">Colesterol Sérico (chol)</label>
+              <input value=" {{ paciente['colesterol'] }}" type="text" class="form-control" id="colesterol" name="colesterol" readonly>
+            </div>
+            <div class="form-group">
+              <label for="glicemia">Glicemia em jejum(>120 mg/dl) (fbs)</label>
+              <input value=" {{ paciente['glicemia'] }}" type="text" class="form-control" id="colesterol" name="colesterol" readonly>
+            </div>
+            <div class="form-group">
+              <label for="num_vasos">Vasos principais (ca)</label>
+              <input value=" {{ paciente['num_vasos_principais'] }}" type="text" class="form-control" id="colesterol" name="colesterol" readonly>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-group">
+              <label for="ta">Pressão arterial em repouso (trestbps)</label>
+              <input value=" {{ paciente['ta'] }}" type="text" class="form-control" id="colesterol" name="colesterol" readonly>
+            </div>
+            <div class="form-group">
+              <label for="result_eletrocardiografico">Resultados eletrocardiográficos (restecg)</label>
+              <input value=" {{ paciente['resultados_eletrocardiograficos'] }}" type="text" class="form-control" id="colesterol" name="colesterol" readonly>
+            </div>
+            <div class="form-group">
+              <label for="freq_cardiaca">Frequência cardíaca máxima (thalach)</label>
+              <input value=" {{ paciente['frequencia_cardiaca'] }}" type="text" class="form-control" id="colesterol" name="colesterol" readonly>
+            </div>
+            <div class="form-group">
+              <label for="oldpeak">Oldpeak-depressão do segmento ST</label>
+              <input value=" {{ paciente['oldpeak'] }}" type="text" class="form-control" id="colesterol" name="colesterol" readonly>
+            </div>
+            <div class="form-group">
+              <label for="inclinacao_st">Inclinação do pico do segmento ST (slope)</label>
+              <input value=" {{ paciente['inclinacao_st'] }}" type="text" class="form-control" id="colesterol" name="colesterol" readonly>
+            </div>
+            
+          </div>
+
+          <div class="col-12">
+            <input value=" {{ paciente['previsao'] }}" type="text" class="btn btn-success btn-block text-light">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}
