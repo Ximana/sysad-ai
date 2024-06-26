@@ -1,0 +1,53 @@
+{% extends "dashboard/baseAdmin.html" %}
+{% block content %}
+
+<h1>Dashboard</h1>
+  
+
+<h1>Profissionais</h1>
+<div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                    <th>Especialidade</th>
+                    <th>Telefone</th>
+                    <th>Data Registo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profissional in profissionais %}
+                <tr>
+                    <td>{{ profissional.id }}</td>
+                    <td>{{ profissional.nome }}</td>
+                    <td>{{ profissional.categoria }}</td>
+                    <td>{{ profissional.especialidade }}</td>
+                    <td>{{ profissional.telefone }}</td>
+                    <td>{{ profissional.data_registo }}</td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+
+        <!-- Paginação -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                    <a class="page-link" href="{{ url_for('listarPrevisoes', page=page-1) }}" tabindex="-1">Anterior</a>
+                </li>
+                {% for p in range(1, total_pages + 1) %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('listarPrevisoes', page=p) }}">{{ p }}</a>
+                </li>
+                {% endfor %}
+                <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+                    <a class="page-link" href="{{ url_for('listarPrevisoes', page=page+1) }}">Próximo</a>
+                </li>
+            </ul>
+        </nav>
+
+{% endblock %}

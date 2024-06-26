@@ -16,7 +16,6 @@
           <th>TA</th>
           <th>Colesterol</th>
           <th>Glicemia</th>
-          <th>Result ECG</th>
           <th>Freq Cardíaca</th>
           <th>Angina</th>
           <th>Oldpeak</th>
@@ -24,6 +23,7 @@
           <th>Vasos Principais</th>
           <th>Talassemia</th>
           <th>Previsão</th>
+          <th>Ação</th>
         </tr>
       </thead>
       <tbody>
@@ -36,7 +36,6 @@
           <td>{{ previsao.ta }}</td>
           <td>{{ previsao.colesterol }}</td>
           <td>{{ previsao.glicemia }}</td>
-          <td>{{ previsao.resultados_eletrocardiograficos }}</td>
           <td>{{ previsao.frequencia_cardiaca }}</td>
           <td>{{ previsao.angina }}</td>
           <td>{{ previsao.oldpeak }}</td>
@@ -44,10 +43,31 @@
           <td>{{ previsao.num_vasos_principais }}</td>
           <td>{{ previsao.talassemia }}</td>
           <td>{{ previsao.previsao }}</td>
+          <td><a class="text-success" href="{{ url_for('detalhePaciente', id_paciente = previsao.paciente_id) }}">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+              </a></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
+
+    <!-- Paginação -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+          <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+              <a class="page-link text-dark" href="{{ url_for('consultaPrevisao', page=page-1) }}" tabindex="-1">Anterior</a>
+          </li>
+          {% for p in range(1, total_pages + 1) %}
+          <li class="page-item {% if p == page %}active {% endif %}">
+              <a class="page-link text-dark" href="{{ url_for('consultaPrevisao', page=p) }}">{{ p }}</a>
+          </li>
+          {% endfor %}
+          <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+              <a class="page-link text-dark" href="{{ url_for('consultaPrevisao', page=page+1) }}">Próximo</a>
+          </li>
+      </ul>
+  </nav>
+    
     {% else %}
     <p>Sem previsões feitas.</p>
     {% endif %}

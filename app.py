@@ -27,8 +27,16 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
+
+"""
+    Rotas Publicas
+"""
 @app.route('/')
 def home():
+    return render_template('index.html')
+
+@app.route('/index')
+def index():
     return render_template('index.html')
 
 @app.route('/sobre')
@@ -80,18 +88,16 @@ def login():
             session['email'] = user['email']
             session['nome'] = profissional['nome']  # Armazena o nome na sessão
             flash('Login com sucesso!', 'success')
-            return redirect(url_for('dashboard'))
+            
+            if user['tipo'] == 'admin':
+                return redirect(url_for('dashboard'))
+            
+            return redirect(url_for('index'))
         else:
             flash('Email ou senha errada. Por favor tente novamente.', 'danger')
     
     return render_template('login.html')
 
-@app.route('/dashboard')
-def dashboard():
-    if 'user_id' in session:
-        nome_profissional = session['nome']  # Obtém o nome do profissional da sessão
-        return render_template('dashboard.html', nome_profissional=nome_profissional)
-    return redirect(url_for('login'))
 
 @app.route('/detalhePaciente/<int:id_paciente>')
 def detalhePaciente(id_paciente):
@@ -112,29 +118,54 @@ def detalhePaciente(id_paciente):
     
     return redirect(url_for('login'))
     
-
 # Rota para pesquisa de paciente por nome
 @app.route('/pesquisar', methods=['GET', 'POST'])
 def pesquisar_paciente():
     if request.method == 'POST':
-        nome = request.form['pesquisa']
+        pesquisa = request.form['pesquisa']
+        user_id = session['user_id']
         db = get_db()
         cursor = db.cursor()
+
+        # Obter o número da página a partir do parâmetro da URL
+        page = request.args.get('page', 1, type=int)
+        per_page = 10  # Número de registros por página
+        offset = (page - 1) * per_page
+
         cursor.execute('''
-                        SELECT paciente.*, previsao.*
-                        FROM paciente
-                        JOIN previsao ON previsao.id_paciente = paciente.id
-                        WHERE paciente.nome LIKE ?''', ('%' + nome + '%',))
+            SELECT paciente.*, previsao.previsao, previsao.id_profissional
+            FROM paciente
+            JOIN previsao ON previsao.id_paciente = paciente.id
+            WHERE previsao.id_profissional = ? and paciente.nome LIKE ?
+            ORDER BY paciente.id DESC
+            LIMIT ? OFFSET ?
+        ''', (user_id, '%' + pesquisa + '%', per_page, offset))
+
         pacientes = cursor.fetchall()
-        return render_template('consultaPaciente.html', pacientes=pacientes, nome_pesquisado=nome)
+
+        # Obter o total de registros
+        cursor.execute('''
+            SELECT COUNT(*)
+            FROM paciente
+            JOIN previsao ON previsao.id_paciente = paciente.id
+            WHERE previsao.id_profissional = ?
+        ''', (user_id,))
+        total_pacientes = cursor.fetchone()[0]
+
+        total_pages = (total_pacientes + per_page - 1) // per_page
+
+        return render_template('consultaPaciente.html', pacientes=pacientes, page=page, total_pages=total_pages)
+        
     return render_template('index.html')
     
-
+ 
+ 
 @app.route('/logout')
 def logout():
     session.clear()
     flash('Sessão Terminada.', 'success')
     return redirect(url_for('login'))
+   
 
 @app.route('/previsao', methods=['GET', 'POST'])
 def previsao():
@@ -172,7 +203,7 @@ def previsao():
         resultado_da_previsao = 'Doente' if previsao[0] == 1 else 'Saudável'
         probabilidade = prediction_proba[0][previsao[0]] * 100
         
-        previsao_mensagem = f'O paciente está {resultado_da_previsao} com uma probabilidade de {probabilidade:.2f}%'
+        previsao_mensagem = f'O paciente está {resultado_da_previsao} com uma probabilidade de {probabilidade:.0f}%'
         # Salvar os dados do paciente e do diagnostico na BD
         gardarPrevisao(request.form, previsao_mensagem)
 
@@ -186,21 +217,39 @@ def previsao():
 
 @app.route('/consultaPrevisao')
 def consultaPrevisao():
-    
     if 'user_id' in session:
         user_id = session['user_id']
         db = get_db()
         cursor = db.cursor()
+
+        # Obter o número da página a partir do parâmetro da URL
+        page = request.args.get('page', 1, type=int)
+        per_page = 10  # Número de registros por página
+        offset = (page - 1) * per_page
+
         cursor.execute('''
-            SELECT p.*, pa.nome AS paciente_nome, pa.data_nascimento, pa.sexo, pa.endereco, pa.telefone, pa.email
+            SELECT p.*, pa.nome AS paciente_nome, pa.id AS paciente_id, pa.data_nascimento, pa.sexo, pa.endereco, pa.telefone, pa.email
             FROM previsao p
             JOIN paciente pa ON p.id_paciente = pa.id
             WHERE p.id_profissional = ?
-            ORDER BY p.id
-            DESC 
-        ''', (user_id,))
+            ORDER BY p.id DESC
+            LIMIT ? OFFSET ?
+        ''', (user_id, per_page, offset))
+
         previsoes = cursor.fetchall()
-        return render_template('consultaPrevisao.html', previsoes=previsoes)
+
+        # Obter o total de registros
+        cursor.execute('''
+            SELECT COUNT(*)
+            FROM previsao p
+            JOIN paciente pa ON p.id_paciente = pa.id
+            WHERE p.id_profissional = ?
+        ''', (user_id,))
+        total_previsoes = cursor.fetchone()[0]
+
+        total_pages = (total_previsoes + per_page - 1) // per_page
+
+        return render_template('consultaPrevisao.html', previsoes=previsoes, page=page, total_pages=total_pages)
     return redirect(url_for('login'))
 
 @app.route('/consultaPaciente')
@@ -210,16 +259,35 @@ def consultaPaciente():
         user_id = session['user_id']
         db = get_db()
         cursor = db.cursor()
+
+        # Obter o número da página a partir do parâmetro da URL
+        page = request.args.get('page', 1, type=int)
+        per_page = 10  # Número de registros por página
+        offset = (page - 1) * per_page
+
         cursor.execute('''
             SELECT paciente.*, previsao.previsao, previsao.id_profissional
             FROM paciente
             JOIN previsao ON previsao.id_paciente = paciente.id
             WHERE previsao.id_profissional = ?
-            ORDER BY paciente.id
-            DESC 
-        ''', (user_id,))
+            ORDER BY paciente.id DESC
+            LIMIT ? OFFSET ?
+        ''', (user_id, per_page, offset))
+
         pacientes = cursor.fetchall()
-        return render_template('consultaPaciente.html', pacientes=pacientes)
+
+        # Obter o total de registros
+        cursor.execute('''
+            SELECT COUNT(*)
+            FROM paciente
+            JOIN previsao ON previsao.id_paciente = paciente.id
+            WHERE previsao.id_profissional = ?
+        ''', (user_id,))
+        total_pacientes = cursor.fetchone()[0]
+
+        total_pages = (total_pacientes + per_page - 1) // per_page
+
+        return render_template('consultaPaciente.html', pacientes=pacientes, page=page, total_pages=total_pages)
     return redirect(url_for('login'))
     
 def gardarPrevisao(form, previsao):
@@ -301,6 +369,65 @@ def gardarPrevisao(form, previsao):
     except sqlite3.IntegrityError as e:
         flash(f'Erro ao salvar os dados: {e}', 'danger')
         return redirect(url_for('previsao'))
+    
+
+
+
+
+"""
+    Rotas do Dashboard
+"""
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user_id' in session:
+        nome_profissional = session['nome']  # Obtém o nome do profissional da sessão
+        return render_template('dashboard/dashboard.html', nome_profissional=nome_profissional)
+    return redirect(url_for('login'))
+
+
+@app.route('/listarPrevisoes')
+def listarPrevisoes():
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+    offset = (page - 1) * per_page
+
+    db = get_db()
+    cursor = db.cursor()
+    previsoes = cursor.execute('''
+        SELECT previsao.*, paciente.nome as paciente_nome, profissional.nome as profissional_nome
+        FROM previsao
+        JOIN paciente ON previsao.id_paciente = paciente.id
+        JOIN profissional ON previsao.id_profissional = profissional.id
+        LIMIT ? OFFSET ?''', (per_page, offset)).fetchall()
+
+    total_previsoes = cursor.execute('SELECT COUNT(*) FROM previsao').fetchone()[0]
+    cursor.close()
+
+    total_pages = (total_previsoes + per_page - 1) // per_page
+
+    return render_template('dashboard/previsaoAdmin.html', previsoes=previsoes, page=page, total_pages=total_pages)
+
+
+@app.route('/listarProfissional')
+def listarProfissional():
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+    offset = (page - 1) * per_page
+
+    db = get_db()
+    cursor = db.cursor()
+    profissionais = cursor.execute('''
+        SELECT *
+        FROM profissional
+        LIMIT ? OFFSET ?''', (per_page, offset)).fetchall()
+
+    total_profissionais = cursor.execute('SELECT COUNT(*) FROM previsao').fetchone()[0]
+    cursor.close()
+
+    total_pages = (total_profissionais + per_page - 1) // per_page
+
+    return render_template('dashboard/profissionalAdmin.html', profissionais=profissionais, page=page, total_pages=total_pages)
     
      
 if __name__ == '__main__':

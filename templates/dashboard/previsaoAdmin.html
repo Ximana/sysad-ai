@@ -1,0 +1,76 @@
+{% extends "dashboard/baseAdmin.html" %}
+{% block content %}
+
+<h1>Dashboard</h1>
+  
+
+<h1>Previsões</h1>
+<div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Paciente</th>
+                    <th>Profissional</th>
+                    <th>Data</th>
+                    <th>Dor Torácica</th>
+                    <th>TA</th>
+                    <th>Colesterol</th>
+                    <th>Glicemia</th>
+                    <th>Resultados Eletrocardiográficos</th>
+                    <th>Frequência Cardíaca</th>
+                    <th>Angina</th>
+                    <th>Oldpeak</th>
+                    <th>Inclinação ST</th>
+                    <th>Número de Vasos Principais</th>
+                    <th>Talassemia</th>
+                    <th>Previsão</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for previsao in previsoes %}
+                <tr>
+                    <td>{{ previsao.id }}</td>
+                    <td>{{ previsao.paciente_nome }}</td>
+                    <td>{{ previsao.profissional_nome }}</td>
+                    <td>{{ previsao.data }}</td>
+                    <td>{{ previsao.dor_toracica }}</td>
+                    <td>{{ previsao.ta }}</td>
+                    <td>{{ previsao.colesterol }}</td>
+                    <td>{{ previsao.glicemia }}</td>
+                    <td>{{ previsao.resultados_eletrocardiograficos }}</td>
+                    <td>{{ previsao.frequencia_cardiaca }}</td>
+                    <td>{{ previsao.angina }}</td>
+                    <td>{{ previsao.oldpeak }}</td>
+                    <td>{{ previsao.inclinacao_st }}</td>
+                    <td>{{ previsao.num_vasos_principais }}</td>
+                    <td>{{ previsao.talassemia }}</td>
+                    <td>{{ previsao.previsao }}</td>
+                    <td><a class="text-success" href="">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+
+        <!-- Paginação -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                    <a class="page-link" href="{{ url_for('listarPrevisoes', page=page-1) }}" tabindex="-1">Anterior</a>
+                </li>
+                {% for p in range(1, total_pages + 1) %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('listarPrevisoes', page=p) }}">{{ p }}</a>
+                </li>
+                {% endfor %}
+                <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+                    <a class="page-link" href="{{ url_for('listarPrevisoes', page=page+1) }}">Próximo</a>
+                </li>
+            </ul>
+        </nav>
+
+{% endblock %}
